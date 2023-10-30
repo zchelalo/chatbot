@@ -22,5 +22,9 @@ tags_metadata = [
   {
     "name": "steps",
     "description": "Rutas de los pasos de las historias"
+  },
+  {
+    "name": "training",
+    "description": "Rutas para entrenar al chatbot"
   }
 ]

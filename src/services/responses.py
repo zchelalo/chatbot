@@ -13,6 +13,10 @@ class ResponseService():
     result = self.db.query(ResponseModel).where(ResponseModel.id == id).one_or_none()
     return result
   
+  def get_responses_by_intent_id(self, id):
+    result = self.db.query(ResponseModel).where(ResponseModel.id_intent == id).all()
+    return result
+  
   def create_response(self, response: ResponseSchema):
     new_response = ResponseModel(**response.model_dump())
     self.db.add(new_response)
