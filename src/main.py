@@ -3,6 +3,7 @@ from docs import tags_metadata
 from middlewares.error_handler import ErrorHandler
 from routes.usuarios import usuario_router
 from routes.auth import auth_router
+from routes.intents import intent_router
 import os
 import uvicorn
 
@@ -20,3 +21,4 @@ app.add_middleware(ErrorHandler)
 
 app.include_router(auth_router)
 app.include_router(usuario_router)
+app.include_router(intent_router)

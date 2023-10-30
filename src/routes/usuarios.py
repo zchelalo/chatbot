@@ -1,5 +1,4 @@
 from fastapi import APIRouter, Response, status, HTTPException, Depends
-from fastapi.responses import JSONResponse
 from starlette.status import HTTP_204_NO_CONTENT, HTTP_404_NOT_FOUND, HTTP_200_OK
 from typing import List
 from middlewares.jwt_bearer import JWTBearer
@@ -31,7 +30,7 @@ def get_usuarios() -> List[UsuarioSchema]:
   # return JSONResponse(status_code=HTTP_200_OK, content=result)
 
 ############################################################################
-# Obtener un registro en base al ID
+# Obtener un registro en base a la matricula
 ############################################################################
 @usuario_router.get(
     path='/usuarios/{matricula}', 

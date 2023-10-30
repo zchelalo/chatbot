@@ -6,5 +6,9 @@ tags_metadata = [
   {
     "name": "auth",
     "description": "Rutas de autenticación"
+  },
+  {
+    "name": "intents",
+    "description": "Rutas de las intenciones de los usuarios"
   }
 ]
