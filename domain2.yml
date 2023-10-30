@@ -1,12 +1,13 @@
 version: '3.1'
 intents:
 - saludar
+- despedir
 responses:
   utter_saludar:
-  - text: Hola, soy grajillo! el chatbot de la UTN. Estoy para ayudarte en lo que
-      necesites :)
-  - text: De verdad si necesitas algo consultamelo !
-  - text: Solo recuerda que tengo mis limites :)
+  - text: Hola hola hola
+  - text: ¡Hola! soy Grajillo el asistente virtual de la Universidad Tecnológica de Nogales, estoy para servirte.
+  utter_despedir:
+  - text: Nos vemos, ¡espero haberte ayudado!
 session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true

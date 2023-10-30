@@ -1,6 +1,6 @@
 from models.responses import Response as ResponseModel
-from models.response_types import ResponseType as ResponseTypeModel
 from schemas.responses import Response as ResponseSchema, ResponseUpdate as ResponseUpdateSchema
+from sqlalchemy import text
 
 class ResponseService():
   def __init__(self, db) -> None:
@@ -15,9 +15,19 @@ class ResponseService():
     return result
   
   def get_responses_by_intent_id(self, id):
-    result = self.db.query(ResponseModel).where(ResponseModel.id_intent == id).all()
-    # result = self.db.query(ResponseModel).join(ResponseTypeModel.id == ResponseModel.id_response_type).where(ResponseModel.id_intent == id).all()
-    return result
+    # result = self.db.query(ResponseModel).where(ResponseModel.id_intent == id).all()
+    sql = text("""
+      SELECT "responses"."respuesta", "response_types"."type"
+      FROM "responses"
+      INNER JOIN "response_types"
+      ON "responses"."id_response_type" = "response_types"."id"
+      WHERE "responses"."id_intent" = :id
+    """)
+
+    result = self.db.execute(sql.bindparams(id=id))
+    results = result.fetchall()
+
+    return results
   
   def create_response(self, response: ResponseSchema):
     new_response = ResponseModel(**response.model_dump())
