@@ -12,3 +12,4 @@ class Intent(Base):
   ejemplos = Column(ARRAY(String), nullable=False)
   responses = relationship('Response', back_populates='intent')
   steps = relationship('Step', back_populates='intent')
+  steps_rule = relationship('StepRule', back_populates='intent')

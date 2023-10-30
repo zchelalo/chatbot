@@ -26,5 +26,13 @@ tags_metadata = [
   {
     "name": "training",
     "description": "Rutas para entrenar al chatbot"
+  },
+  {
+    "name": "rules",
+    "description": "Rutas para las reglas"
+  },
+  {
+    "name": "steps_rule",
+    "description": "Rutas para los pasos de las reglas"
   }
 ]

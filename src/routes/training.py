@@ -1,17 +1,18 @@
-from fastapi import APIRouter, Response, status, HTTPException, Depends
-from starlette.status import HTTP_204_NO_CONTENT, HTTP_404_NOT_FOUND, HTTP_200_OK
-from typing import List
+from fastapi import APIRouter, status, Depends
+from starlette.status import HTTP_200_OK
 from middlewares.jwt_bearer import JWTBearer
 from config.database import Session, engine, Base
 
 from services.usuarios import UsuarioService
 from services.intents import IntentService
 from services.responses import ResponseService
-from services.stories import StoryService
 from services.steps import StepService
+from services.steps_rule import StepRuleService
 
 # import yaml
 import ruamel.yaml
+
+import subprocess
 
 training_router = APIRouter()
 
@@ -186,3 +187,97 @@ def create_stories():
     stories_file.write(stories_content)
 
   return stories_data
+
+############################################################################
+# Crear rules.yml
+############################################################################
+@training_router.post(
+    path='/training/rules', 
+    tags=['training'], 
+    status_code=status.HTTP_200_OK,
+    # response_model=IntentSchema,
+    dependencies=[Depends(JWTBearer())]
+  )
+def create_rules():
+  db = Session()
+  steps = StepRuleService(db).get_step_rule_rule_and_intent()
+
+  # Crear un diccionario con el formato deseado
+  rules_data  = {
+    "version": "3.1",
+    "rules": []
+  }
+
+  formatted_data = {}
+  for step in steps:
+    descripcion = step.descripcion
+    intent = step.nombre_intent
+    respuesta = step.nombre_respuesta
+
+    if descripcion not in formatted_data:
+      formatted_data[descripcion] = {
+        "intent": [intent],
+        "respuesta": [respuesta]
+      }
+    else:
+      formatted_data[descripcion]["intent"].append(intent)
+      formatted_data[descripcion]["respuesta"].append(respuesta)
+
+  # Convertir los datos al formato de Rasa
+  for descripcion, data in formatted_data.items():
+    rule_entry = {
+      "rule": descripcion,
+      "steps": []
+    }
+    for intent, respuesta in zip(data["intent"], data["respuesta"]):
+      rule_entry["steps"].append({"intent": intent})
+      rule_entry["steps"].append({"action": respuesta})
+    rules_data["rules"].append(rule_entry)
+
+  # Nombre del archivo Stories
+  rules_filename = "data/rules.yml"
+    
+  # Escribir el contenido en un archivo YAML
+  yaml = ruamel.yaml.YAML()
+  yaml.indent(offset=2)
+  yaml.width = 10000
+
+  with open(rules_filename, "w") as rules_file:
+    yaml.dump(rules_data, rules_file)
+
+  # Corregir la indentación de "intent" aquí
+  with open(rules_filename, "r") as rules_file:
+    rules_content = rules_file.read()
+    rules_content = rules_content.replace("  - rule", "- rule")
+    rules_content = rules_content.replace("    - intent", "  - intent")
+    rules_content = rules_content.replace("    - action", "  - action")
+
+  with open(rules_filename, "w") as rules_file:
+    rules_file.write(rules_content)
+
+  return rules_data
+
+############################################################################
+# Crear el modelo
+############################################################################
+@training_router.post(
+    path='/training/model', 
+    tags=['training'], 
+    status_code=status.HTTP_200_OK,
+    # response_model=IntentSchema,
+    dependencies=[Depends(JWTBearer())]
+  )
+def create_model():
+  # Comando para entrenar el modelo
+  train_command = "rasa train"
+  ejecutar_modelo_command = 'rasa run -m models --enable-api --cors "*"'
+
+  # Ejecutar el comando
+  process = subprocess.Popen(train_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+  stdout, stderr = process.communicate()
+
+  # Comprobar el resultado
+  if process.returncode == 0:
+    return {'message': "Modelo entrenado con éxito"}
+  else:
+    return {'error': "Error al entrenar el modelo" + stderr.decode()}

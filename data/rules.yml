@@ -1,18 +1,10 @@
-version: "3.1"
-
+version: '3.1'
 rules:
-
-- rule: despedirte siempre que el usuario lo haga
-  steps:
-  - intent: despedir
-  - action: utter_despedir
-
 - rule: saludar siempre que el usuario lo haga
   steps:
   - intent: saludar
   - action: utter_saludar
-
-- rule: decir que eres un bot siempre que el usuario pregunte
+- rule: despedirte siempre que el usuario lo haga
   steps:
-  - intent: soy_un_bot
-  - action: utter_soy_un_bot
+  - intent: despedir
+  - action: utter_despedir

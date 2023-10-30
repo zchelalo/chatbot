@@ -1,0 +1,145 @@
+version: "3.1"
+
+nlu:
+- intent: saludar
+  examples: |
+    - hey
+    - ey
+    - hola
+    - holi
+    - que onda
+    - buenos dias
+    - buenas tardes
+    - buenas noches
+    - que rollo
+    - que pasa?
+    - ey wey
+    - buenosdias
+    - buenastardes
+    - buenasnoches
+    - que pedo
+    - buen dia
+    - buena tarde
+    - buena noche
+
+- intent: despedir
+  examples: |
+    - adios
+    - bye
+    - nos vemos
+    - nos vemos luego
+    - ahi nos wachamos
+    - goodbye
+    - ten un buen dia
+    - al rato
+    - sale bye
+    - sale pues
+
+- intent: soy_un_bot
+  examples: |
+    - eres un bot?
+    - eres un humano?
+    - estoy hablando con un bot?
+    - estoy hablando con un humano?
+    - que eres?
+    - quien eres?
+    - con quien hablo?
+
+- intent: agradecimiento
+  examples: |
+    - sale, gracias
+    - muchas gracias
+    - gracias
+    - fuiste muy util
+    - me fuiste de ayuda
+    - estoy agradecido contigo
+    - gracias por todo
+    - gracias, nos vemos
+    - gracias por la ayuda
+
+- intent: reinscripcion
+  examples: |
+    - me quiero reinscribir
+    - quiero información de las reinscripciones
+    - como me reinscribo?
+    - dame información de las reinscripciones
+    - como son las reinscripciones?
+    - ayudame con reinscribirme
+    - me puedes ayudar a reinscribirme?
+    - que tengo que hacer para reinscribirme?
+    - que hago para reinscribirme?
+
+- intent: calendario
+  examples: |
+    - que dia no hay clases?
+    - me pasas el calendario?
+    - dame el calendario
+    - pasame el calendario
+    - cuando no hay clases?
+    - cuando no hay clases
+    - cuando empiezan las reinscripciones?
+    - que dia me puedo reinscribir
+    - cuando son las vacaciones
+    - cuando empiezan las vacaciones
+    - cuando empiezan las inscripciones
+    - fecha de inscripcion
+    - fecha de reinscripcion
+    - cuando es la fecha de inscripcion
+    - cuando es la fecha de reinscripcion
+    - cuando son las fechas de reinscripcion
+    - cuando son las fechas de reinscripciones
+    - cuando son las fechas de inscripcion
+    - cuando son las fechas de inscripciones
+    - cuando entramos a clases
+    - cuando empiezan las clases
+    - que dia empiezan las clases
+    - que dia son las clases
+    - el viernes habrá clases?
+    - tendremos clases el viernes?
+    - que dia son las vacaciones
+    - que dia empiezan las vacaciones
+
+- intent: proceso_estadias
+  examples: |
+    - como funcionan las estadias
+    - como es el proceso de estadias
+    - que hago para las estadias
+    - que tengo que hacer para las estadias
+    - que hago para estadias
+    - como hago las estadias
+    - como completo las estadias
+    - de que forma hago estadias
+    - de que forma hago las estadias
+    - que tengo que entregar para las estadias
+    - que tengo que entregar para completar estadias
+    - como es el funcionamiento de las estadias
+    - que procedimiento llevo a cabo en estadias
+    - que procedimiento llevo en estadias
+    - que proceso es el de estadias
+
+- intent: encontrar_empresa_estadias
+  examples: |
+    - como encuentro una empresa para hacer estadias
+    - como encuentro una empresa para hacer mis estadias
+    - donde hago mis estadias
+    - en donde hago mis estadias
+    - donde hago mis estadias?
+    - en donde hago mis estadias?
+    - donde encuentro un lugar para hacer estadias
+    - donde hago las estadias
+    - como le hago para encontrar donde hacer mis estadias
+    - quien me puede ayudar a encontrar un lugar para mis estadias
+    - quien me puede ayudar a encontrar un lugar para hacer mis estadias
+    - quiero encontrar una empresa para hacer mis estadias
+    - quiero encontrar una empresa para mis estadias
+    - quiero encontrar una empresa para las estadias
+    - quisiera saber donde hacer mis estadias
+    - quisiera saber donde tengo que ir para hacer mis estadias
+    - como averiguo donde hacer mis estadias
+    - como averiguo donde hacer las estadias
+    - quien me acomoda para las estadias
+    - hay alguien que me ayude donde hacer mis estadias
+    - hay alguien que me ayude a encontrar donde hacer mis estadias
+    - en vinculacion me ayudan a conectarme con una empresa?
+    - en vinculacion me ayudan a encontrar donde hacer mis estadias?
+    - en vinculacion me ayudan a encontrar donde hacer las estadias?
