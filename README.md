@@ -1,5 +1,5 @@
-## Aún en desarrollo  
-# -- BACKEND --  
+# Aún en desarrollo  
+## -- BACKEND --  
 - [ ] Crear la base de datos para entrenar al bot desde ella.  
   
 - [ ] Añadir una tabla de mensajes la cual tendrá como finalidad el registrar los mensajes enviados por usuario y bot. Está tendrá campos como ID, clave, rol del mensaje (bot o usuario), contenido del mensaje, fecha y hora del mensaje.  
@@ -8,7 +8,7 @@ Así puedo crear historias realistas al chatbot. Claro, con el contenido del men
 - [ ] Añadir una tabla de calificación, en esta a la hora de que se califique un mensaje ya sea de forma positiva o de forma negativa, se registrará en la base de datos. Tendrá ID, ID intención, mensaje usuario, calificación (positiva o negativa), fecha y hora de la calificación.  
 Cuando se califique un mensaje, este le hablará a algún método de la API, en el cual se le enviará tanto el mensaje del usuario como del bot, con el fin de sacar la intención desde la API ya que no la da directamente, se compararán las respuesta del bot para saber si son iguales y así guardar la información.  
   
-# -- FRONTEND --  
+## -- FRONTEND --  
 - [ ] Primeramente, el chatbot estará presente en la gran mayoría de las páginas, en forma de un pequeño icono en la esquina inferior derecha de la pantalla, así se tiene acceso a él de una forma cómoda y con disponibilidad en todo momento.  
   
 - [ ] Al momento de clikear en él se cambiara el icono de Grajillo por el de un símbolo de enviar, a la par que se abrirá el propio chat con un saludo y unas propuestas de mensaje para enviarle.  

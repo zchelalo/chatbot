@@ -21,20 +21,20 @@ class ActionReinscripcion(Action):
 		texto6 = '4: Después agregaras el costo de la reinscripción el cual viene en el PDF descargado con anterioridad.'
 		texto7 = '5: Cuando se efectue el pago recuerda el imprimir el ticket en caso de ir al cajero automático, en caso de haber pagado desde la aplicación toma captura del movimiento efectuado.'
 
-		response = {
-			[
-				texto,
-				ruta_img + "reinscripcion-paso-1.png"
-			],
-			texto2,
-			[
-				texto3,
-				texto4,
-				texto5,
-				texto6,
-				texto7
-			]
-		}
+		response = [
+				[
+					texto,
+					ruta_img + "reinscripcion-paso-1.png",
+				],
+				texto2,
+				[
+						texto3,
+						texto4,
+						texto5,
+						texto6,
+						texto7
+				]
+		]
 
 		dispatcher.utter_message(json_message=response)
 
@@ -53,12 +53,12 @@ class ActionCalendario(Action):
 	def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 		texto = 'En el siguiente calendario podrás ver distintos tipos de fechas, como de las inscripciones, cursos de inducción, inicio del cuatrimestre, fin del cuatrimestre, reinscripciones, vacaciones, días inhabiles, días habiles, etcétera.'
 
-		response = {
+		response = [
 			[
 				texto,
 				ruta_pdf + "calendario.pdf"
 			]
-		}
+		]
 
 		dispatcher.utter_message(json_message=response)
 
@@ -80,7 +80,7 @@ class ActionProcesoEstadias(Action):
 
 		texto8 = 'Si tienes alguna duda no te la pienses dos veces en comentarmelo :)'
 
-		response = {
+		response = [
 			texto,
 			[
 				texto2,
@@ -91,7 +91,7 @@ class ActionProcesoEstadias(Action):
 				texto7
 			],
 			texto8
-		}
+		]
 
 		dispatcher.utter_message(json_message=response)
 
