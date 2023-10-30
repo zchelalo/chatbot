@@ -10,5 +10,9 @@ tags_metadata = [
   {
     "name": "intents",
     "description": "Rutas de las intenciones de los usuarios"
+  },
+  {
+    "name": "responses",
+    "description": "Rutas de las respuestas del chatbot"
   }
 ]
