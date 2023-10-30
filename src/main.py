@@ -6,6 +6,7 @@ from routes.auth import auth_router
 from routes.intents import intent_router
 from routes.responses import response_router
 from routes.stories import story_router
+from routes.steps import step_router
 import os
 import uvicorn
 
@@ -26,3 +27,4 @@ app.include_router(usuario_router)
 app.include_router(intent_router)
 app.include_router(response_router)
 app.include_router(story_router)
+app.include_router(step_router)

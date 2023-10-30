@@ -11,3 +11,4 @@ class Intent(Base):
   descripcion = Column(Text, nullable=True)
   ejemplos = Column(ARRAY(String), nullable=False)
   responses = relationship('Response', back_populates='intent')
+  steps = relationship('Step', back_populates='intent')

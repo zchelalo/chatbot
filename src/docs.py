@@ -18,5 +18,9 @@ tags_metadata = [
   {
     "name": "stories",
     "description": "Rutas de las historias de ejemplo"
+  },
+  {
+    "name": "steps",
+    "description": "Rutas de los pasos de las historias"
   }
 ]
