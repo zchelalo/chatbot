@@ -1,4 +1,5 @@
 from models.responses import Response as ResponseModel
+from models.response_types import ResponseType as ResponseTypeModel
 from schemas.responses import Response as ResponseSchema, ResponseUpdate as ResponseUpdateSchema
 
 class ResponseService():
@@ -15,6 +16,7 @@ class ResponseService():
   
   def get_responses_by_intent_id(self, id):
     result = self.db.query(ResponseModel).where(ResponseModel.id_intent == id).all()
+    # result = self.db.query(ResponseModel).join(ResponseTypeModel.id == ResponseModel.id_response_type).where(ResponseModel.id_intent == id).all()
     return result
   
   def create_response(self, response: ResponseSchema):

@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from docs import tags_metadata
 from middlewares.error_handler import ErrorHandler
+
 from routes.usuarios import usuario_router
 from routes.auth import auth_router
 from routes.intents import intent_router
@@ -8,6 +9,7 @@ from routes.responses import response_router
 from routes.stories import story_router
 from routes.steps import step_router
 from routes.training import training_router
+
 import os
 import uvicorn
 
