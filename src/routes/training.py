@@ -55,13 +55,16 @@ def create_domain():
     }
   }
 
+  # Nombre del archivo domain
+  domain_filename = "domain.yml"
+
   # Escribir el contenido en un archivo YAML
   yaml = ruamel.yaml.YAML()
   yaml.width = 10000
   # yaml.explicit_start = True
 
-  with open("domain2.yml", "w") as yaml_file:
-      yaml.dump(domain_data, yaml_file)
+  with open(domain_filename, "w") as yaml_file:
+    yaml.dump(domain_data, yaml_file)
 
   return domain_data
 
@@ -94,7 +97,7 @@ def create_nlu():
     )
 
   # Nombre del archivo NLU
-  nlu_filename = "data/nlu2.yml"
+  nlu_filename = "data/nlu.yml"
 
   # Escribir el contenido en un archivo YAML
   yaml = ruamel.yaml.YAML()
@@ -162,7 +165,7 @@ def create_stories():
     stories_data["stories"].append(story_entry)
 
   # Nombre del archivo Stories
-  stories_filename = "data/stories2.yml"
+  stories_filename = "data/stories.yml"
     
   # Escribir el contenido en un archivo YAML
   yaml = ruamel.yaml.YAML()

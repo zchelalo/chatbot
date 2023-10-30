@@ -1,0 +1,261 @@
+version: "3.1"
+
+stories:
+
+- story: saludar y despedir
+  steps:
+  - intent: saludar
+  - action: utter_saludar
+  - intent: despedir
+  - action: utter_despedir
+
+- story: saludar preguntar que es y despedir
+  steps:
+  - intent: saludar
+  - action: utter_saludar
+  - intent: soy_un_bot
+  - action: utter_soy_un_bot
+  - intent: despedir
+  - action: utter_despedir
+
+- story: saludar y preguntar que es
+  steps:
+  - intent: saludar
+  - action: utter_saludar
+  - intent: soy_un_bot
+  - action: utter_soy_un_bot
+
+- story: preguntar que es y dar las gracias
+  steps:
+  - intent: soy_un_bot
+  - action: utter_soy_un_bot
+  - intent: agradecimiento
+  - action: utter_agradecimiento
+
+- story: saludar preguntar que es dar las gracias y despedida
+  steps:
+  - intent: saludar
+  - action: utter_saludar
+  - intent: soy_un_bot
+  - action: utter_soy_un_bot
+  - intent: agradecimiento
+  - action: utter_agradecimiento
+  - intent: despedir
+  - action: utter_despedir
+
+- story: pedir información sobre la reinscripcion
+  steps:
+  - intent: reinscripcion
+  - action: action_reinscripcion
+
+- story: saludar y pedir información sobre la reinscripcion
+  steps:
+  - intent: saludar
+  - action: utter_saludar
+  - intent: reinscripcion
+  - action: action_reinscripcion
+
+- story: saludar y pedir información sobre la reinscripcion y agradecer
+  steps:
+  - intent: saludar
+  - action: utter_saludar
+  - intent: reinscripcion
+  - action: action_reinscripcion
+  - intent: agradecimiento
+  - action: utter_agradecimiento
+
+- story: saludar y pedir información sobre la reinscripcion y agradecer y despedirse
+  steps:
+  - intent: saludar
+  - action: utter_saludar
+  - intent: reinscripcion
+  - action: action_reinscripcion
+  - intent: agradecimiento
+  - action: utter_agradecimiento
+  - intent: despedir
+  - action: utter_despedir
+
+- story: pedir calendario
+  steps:
+  - intent: calendario
+  - action: action_calendario
+
+- story: pedir calendario y agradecer
+  steps:
+  - intent: calendario
+  - action: action_calendario
+  - intent: agradecimiento
+  - action: utter_agradecimiento
+
+- story: saludar y pedir calendario
+  steps:
+  - intent: saludar
+  - action: utter_saludar
+  - intent: calendario
+  - action: action_calendario
+
+- story: saludar y pedir calendario y agradecer
+  steps:
+  - intent: saludar
+  - action: utter_saludar
+  - intent: calendario
+  - action: action_calendario
+  - intent: agradecimiento
+  - action: utter_agradecimiento
+
+- story: saludar y pedir calendario y despedirse
+  steps:
+  - intent: saludar
+  - action: utter_saludar
+  - intent: calendario
+  - action: action_calendario
+  - intent: despedir
+  - action: utter_despedir
+
+- story: saludar y pedir calendario y agradecer y despedirse
+  steps:
+  - intent: saludar
+  - action: utter_saludar
+  - intent: calendario
+  - action: action_calendario
+  - intent: agradecimiento
+  - action: utter_agradecimiento
+  - intent: despedir
+  - action: utter_despedir
+
+- story: pedir proceso_estadias
+  steps:
+  - intent: proceso_estadias
+  - action: action_proceso_estadias
+
+- story: pedir proceso_estadias y agradecer
+  steps:
+  - intent: proceso_estadias
+  - action: action_proceso_estadias
+  - intent: agradecimiento
+  - action: utter_agradecimiento
+
+- story: saludar y pedir proceso_estadias
+  steps:
+  - intent: saludar
+  - action: utter_saludar
+  - intent: proceso_estadias
+  - action: action_proceso_estadias
+
+- story: saludar y pedir proceso_estadias y agradecer
+  steps:
+  - intent: saludar
+  - action: utter_saludar
+  - intent: proceso_estadias
+  - action: action_proceso_estadias
+  - intent: agradecimiento
+  - action: utter_agradecimiento
+
+- story: saludar y pedir proceso_estadias y despedirse
+  steps:
+  - intent: saludar
+  - action: utter_saludar
+  - intent: proceso_estadias
+  - action: action_proceso_estadias
+  - intent: despedir
+  - action: utter_despedir
+
+- story: saludar y pedir proceso_estadias y agradecer y despedirse
+  steps:
+  - intent: saludar
+  - action: utter_saludar
+  - intent: proceso_estadias
+  - action: action_proceso_estadias
+  - intent: agradecimiento
+  - action: utter_agradecimiento
+  - intent: despedir
+  - action: utter_despedir
+
+- story: pedir encontrar_empresa_estadias
+  steps:
+  - intent: encontrar_empresa_estadias
+  - action: utter_encontrar_empresa_estadias
+
+- story: pedir encontrar_empresa_estadias y agradecer
+  steps:
+  - intent:encontrar_empresa_estadiass
+  - action: utter_encontrar_empresa_estadias
+  - intent: agradecimiento
+  - action: utter_agradecimiento
+
+- story: saludar y pedir encontrar_empresa_estadias
+  steps:
+  - intent: saludar
+  - action: utter_saludar
+  - intent: encontrar_empresa_estadias
+  - action: utter_encontrar_empresa_estadias
+
+- story: saludar y pedir encontrar_empresa_estadias y agradecer
+  steps:
+  - intent: saludar
+  - action: utter_saludar
+  - intent: encontrar_empresa_estadias
+  - action: utter_encontrar_empresa_estadias
+  - intent: agradecimiento
+  - action: utter_agradecimiento
+
+- story: saludar y pedir encontrar_empresa_estadias y despedirse
+  steps:
+  - intent: saludar
+  - action: utter_saludar
+  - intent: encontrar_empresa_estadias
+  - action: utter_encontrar_empresa_estadias
+  - intent: despedir
+  - action: utter_despedir
+
+- story: saludar y pedir encontrar_empresa_estadias y agradecer y despedirse
+  steps:
+  - intent: saludar
+  - action: utter_saludar
+  - intent: encontrar_empresa_estadias
+  - action: utter_encontrar_empresa_estadias
+  - intent: agradecimiento
+  - action: utter_agradecimiento
+  - intent: despedir
+  - action: utter_despedir
+
+- story: pedir proceso_estadias y preguntar encontrar_empresa_estadias
+  steps:
+  - intent: proceso_estadias
+  - action: action_proceso_estadias
+  - intent: encontrar_empresa_estadias
+  - action: utter_encontrar_empresa_estadias
+
+- story: saludar y pedir proceso_estadias y preguntar encontrar_empresa_estadias
+  steps:
+  - intent: saludar
+  - action: utter_saludar
+  - intent: proceso_estadias
+  - action: action_proceso_estadias
+  - intent: encontrar_empresa_estadias
+  - action: utter_encontrar_empresa_estadias
+
+- story: saludar y pedir proceso_estadias y preguntar encontrar_empresa_estadias y agradecer
+  steps:
+  - intent: saludar
+  - action: utter_saludar
+  - intent: proceso_estadias
+  - action: action_proceso_estadias
+  - intent: encontrar_empresa_estadias
+  - action: utter_encontrar_empresa_estadias
+  - intent: agradecimiento
+  - action: utter_agradecimiento
+
+# - story: reinscripcion alumno tsu
+#   steps:
+#   - intent: reinscripcion
+#   - action: utter_reinscripcion
+#   - intent: reinscripcion_tsu
+#   - action: utter_reinscripcion_tsu
+
+# - story: reinscripcion alumno ingenieria
+#   steps:
+#   - intent: reinscripcion
+#   - action: utter_reinscripcion
+#   - intent: reinscripcion_ingenieria
+#   - action: utter_reinscripcion_ingenieria
