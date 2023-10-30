@@ -14,5 +14,9 @@ tags_metadata = [
   {
     "name": "responses",
     "description": "Rutas de las respuestas del chatbot"
+  },
+  {
+    "name": "stories",
+    "description": "Rutas de las historias de ejemplo"
   }
 ]
