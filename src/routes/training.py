@@ -270,7 +270,6 @@ def create_rules():
 def create_model():
   # Comando para entrenar el modelo
   train_command = "rasa train"
-  ejecutar_modelo_command = 'rasa run -m models --enable-api --cors "*"'
 
   # Ejecutar el comando
   process = subprocess.Popen(train_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -281,3 +280,25 @@ def create_model():
     return {'message': "Modelo entrenado con éxito"}
   else:
     return {'error': "Error al entrenar el modelo" + stderr.decode()}
+
+############################################################################
+# Ejecutar el modelo
+############################################################################
+@training_router.post(
+    path='/training/run', 
+    tags=['training'], 
+    status_code=status.HTTP_200_OK,
+    # response_model=IntentSchema,
+    dependencies=[Depends(JWTBearer())]
+  )
+def run_model():
+  run_command = 'rasa run -m models --enable-api --cors "*"'
+
+  # Ejecutar el comando para iniciar el servidor de Rasa
+  process = subprocess.Popen(run_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+  stdout, stderr = process.communicate()
+
+  if process.returncode == 0:
+    return {'message': "Servidor de Rasa en ejecución."}
+  else:
+    return {'error': "Error al iniciar el servidor Rasa: " + stderr.decode()}

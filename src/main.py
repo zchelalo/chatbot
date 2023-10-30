@@ -1,4 +1,6 @@
 from fastapi import FastAPI
+# from fastapi.middleware.cors import CORSMiddleware
+
 from docs import tags_metadata
 from middlewares.error_handler import ErrorHandler
 
@@ -26,6 +28,15 @@ app = FastAPI(
 )
 
 app.add_middleware(ErrorHandler)
+
+# Configura el middleware CORS para permitir solicitudes desde cualquier origen
+# app.add_middleware(
+# 	CORSMiddleware,
+# 	allow_origins=["*"],  # Esto permitirá solicitudes desde cualquier origen, cambia a una lista de orígenes permitidos si es necesario.
+# 	allow_credentials=True,
+# 	allow_methods=["*"],  # Puedes especificar los métodos HTTP permitidos
+# 	allow_headers=["*"],  # Puedes especificar los encabezados permitidos
+# )
 
 app.include_router(auth_router)
 app.include_router(usuario_router)
