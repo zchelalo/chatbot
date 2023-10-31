@@ -293,21 +293,21 @@ def create_model():
 ############################################################################
 # Ejecutar el modelo
 ############################################################################
-# @training_router.post(
-#     path='/training/run', 
-#     tags=['training'], 
-#     status_code=status.HTTP_200_OK,
-#     # response_model=IntentSchema,
-#     dependencies=[Depends(JWTBearer())]
-#   )
-# def run_model():
-#   run_command = 'rasa run -m models --enable-api --cors "*"'
+@training_router.post(
+    path='/training/run', 
+    tags=['training'], 
+    status_code=status.HTTP_200_OK,
+    # response_model=IntentSchema,
+    dependencies=[Depends(JWTBearer())]
+  )
+def run_model():
+  run_command = 'rasa run -m models --enable-api --cors "*"'
 
-#   # Ejecutar el comando para iniciar el servidor de Rasa
-#   process = subprocess.Popen(run_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-#   stdout, stderr = process.communicate()
+  # Ejecutar el comando para iniciar el servidor de Rasa
+  process = subprocess.Popen(run_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+  stdout, stderr = process.communicate()
 
-#   if process.returncode == 0:
-#     return {'message': "Servidor de Rasa en ejecución."}
-#   else:
-#     return {'error': "Error al iniciar el servidor Rasa: " + stderr.decode()}
+  if process.returncode == 0:
+    return {'message': "Servidor de Rasa en ejecución."}
+  else:
+    return {'error': "Error al iniciar el servidor Rasa: " + stderr.decode()}
