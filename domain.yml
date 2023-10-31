@@ -4,10 +4,14 @@ intents:
 - despedir
 responses:
   utter_saludar:
-  - text: Hola hola hola
-  - text: ¡Hola! soy Grajillo el asistente virtual de la Universidad Tecnológica de Nogales, estoy para servirte.
+  - custom:
+      json:
+      - ¡Hola! soy Grajillo el asistente virtual de la Universidad Tecnológica de Nogales, estoy para servirte.
+      - Hola hola hola
   utter_despedir:
-  - text: Nos vemos, ¡espero haberte ayudado!
+  - custom:
+      json:
+      - Nos vemos, ¡espero haberte ayudado!
 session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true
