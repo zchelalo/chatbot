@@ -1,6 +1,5 @@
 from models.responses import Response as ResponseModel
 from schemas.responses import Response as ResponseSchema, ResponseUpdate as ResponseUpdateSchema
-from sqlalchemy import text
 
 class ResponseService():
   def __init__(self, db) -> None:

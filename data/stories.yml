@@ -1,8 +1,30 @@
 version: '3.1'
 stories:
+- story: saludar
+  steps:
+  - intent: saludar
+  - action: utter_saludar
 - story: saludar y despedir
   steps:
   - intent: saludar
   - action: utter_saludar
+  - intent: despedir
+  - action: utter_despedir
+- story: saludar preguntar que es y despedir
+  steps:
+  - intent: saludar
+  - action: utter_saludar
+  - intent: soy_un_bot
+  - action: utter_soy_un_bot
+  - intent: despedir
+  - action: utter_despedir
+- story: saludar y preguntar que es
+  steps:
+  - intent: saludar
+  - action: utter_saludar
+  - intent: soy_un_bot
+  - action: utter_soy_un_bot
+- story: despedir
+  steps:
   - intent: despedir
   - action: utter_despedir

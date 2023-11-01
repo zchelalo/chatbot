@@ -22,4 +22,5 @@ EXPOSE 8000
 EXPOSE 5005
 
 # Comando para iniciar tanto FastAPI como el servidor de Rasa
-CMD ["bash", "-c", "python src/main.py & rasa run -m models --enable-api --cors *"]
+# CMD ["bash", "-c", "python src/main.py & rasa run -m models --enable-api --cors *"]
+CMD ["bash", "-c", "python src/main.py"]

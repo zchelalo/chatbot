@@ -2,16 +2,21 @@ version: '3.1'
 intents:
 - saludar
 - despedir
+- soy_un_bot
 responses:
   utter_saludar:
   - custom:
       json:
       - ¡Hola! soy Grajillo el asistente virtual de la Universidad Tecnológica de Nogales, estoy para servirte.
-      - Hola hola hola
+      - holi holi holi
   utter_despedir:
   - custom:
       json:
       - Nos vemos, ¡espero haberte ayudado!
+  utter_soy_un_bot:
+  - custom:
+      json:
+      - Soy un bot de chat con el fin de ayudar a los grajos :)
 session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true

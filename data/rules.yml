@@ -8,3 +8,7 @@ rules:
   steps:
   - intent: despedir
   - action: utter_despedir
+- rule: decir que eres un bot siempre que el usuario pregunte
+  steps:
+  - intent: soy_un_bot
+  - action: utter_soy_un_bot

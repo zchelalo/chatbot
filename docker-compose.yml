@@ -13,7 +13,8 @@ services:
     depends_on:
       sql_db:
         condition: service_healthy
-    command: sh -c "python src/main.py & rasa run -m models --enable-api --cors '*'"
+    command: sh -c "python src/main.py"
+    # command: sh -c "python src/main.py & rasa run -m models --enable-api --cors '*'"
 
   sql_db:
     image: postgres:15.2
