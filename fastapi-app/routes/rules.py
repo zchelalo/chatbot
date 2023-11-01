@@ -20,7 +20,7 @@ Base.metadata.create_all(bind=engine)
     response_model=List[RuleSchema],
     dependencies=[Depends(JWTBearer())]
   )
-def get_rules() -> List[RuleSchema]:
+async def get_rules() -> List[RuleSchema]:
   db = Session()
   result = RuleService(db).get_rules()
   if not result:
@@ -37,7 +37,7 @@ def get_rules() -> List[RuleSchema]:
     response_model=RuleSchema,
     dependencies=[Depends(JWTBearer())]
   )
-def get_rule(id: int) -> RuleSchema:
+async def get_rule(id: int) -> RuleSchema:
   db = Session()
   result = RuleService(db).get_rule(id)
   if not result:
@@ -54,7 +54,7 @@ def get_rule(id: int) -> RuleSchema:
     response_model=RuleSchema,
     dependencies=[Depends(JWTBearer())]
   )
-def create_rule(rule: RuleSchema) -> RuleSchema:
+async def create_rule(rule: RuleSchema) -> RuleSchema:
   if rule.id:
     rule.id = None
   db = Session()
@@ -71,7 +71,7 @@ def create_rule(rule: RuleSchema) -> RuleSchema:
     response_model=RuleSchema,
     dependencies=[Depends(JWTBearer())]
   )
-def update_rule(id: int, rule_update: RuleUpdateSchema) -> RuleSchema:
+async def update_rule(id: int, rule_update: RuleUpdateSchema) -> RuleSchema:
   db = Session()
   rule = RuleService(db).get_rule(id)
   if not rule:
@@ -89,7 +89,7 @@ def update_rule(id: int, rule_update: RuleUpdateSchema) -> RuleSchema:
     status_code=status.HTTP_204_NO_CONTENT,
     dependencies=[Depends(JWTBearer())]
   )
-def delete_rule(id: int):
+async def delete_rule(id: int):
   db = Session()
   rule = RuleService(db).get_rule(id)
   if not rule:

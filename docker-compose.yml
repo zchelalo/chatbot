@@ -2,19 +2,28 @@ version: '3.1'
 
 services:
   fastapi:
-    image: image_fastapi
-    build: .
+    build: ./fastapi-app
     container_name: fastapi_app
     ports:
       - 8000:8000
-      - 5005:5005
     volumes:
-      - ./:/app
+      - ./fastapi-app:/app
+      - ./shared_data:/app/shared_data
     depends_on:
       sql_db:
         condition: service_healthy
-    command: sh -c "python src/main.py"
+    command: sh -c "python main.py"
     # command: sh -c "python src/main.py & rasa run -m models --enable-api --cors '*'"
+
+  rasa:
+    build: ./rasa-app
+    container_name: rasa_app
+    ports:
+      - 5005:5005
+    volumes:
+      - ./rasa-app:/app
+      - ./shared_data:/app/shared_data   # Directorio compartido
+    command: sh -c "rasa run -m models --enable-api --cors '*'"
 
   sql_db:
     image: postgres:15.2
@@ -42,3 +51,6 @@ services:
     depends_on:
       sql_db:
         condition: service_started
+
+volumes:
+  shared_data:  # Nombre del volumen compartido

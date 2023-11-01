@@ -20,7 +20,7 @@ Base.metadata.create_all(bind=engine)
     response_model=List[ResponseSchema],
     dependencies=[Depends(JWTBearer())]
   )
-def get_responses() -> List[ResponseSchema]:
+async def get_responses() -> List[ResponseSchema]:
   db = Session()
   result = ResponseService(db).get_responses()
   if not result:
@@ -37,7 +37,7 @@ def get_responses() -> List[ResponseSchema]:
     response_model=ResponseSchema,
     dependencies=[Depends(JWTBearer())]
   )
-def get_response(id: int) -> ResponseSchema:
+async def get_response(id: int) -> ResponseSchema:
   db = Session()
   result = ResponseService(db).get_response(id)
   if not result:
@@ -54,7 +54,7 @@ def get_response(id: int) -> ResponseSchema:
     response_model=ResponseSchema,
     dependencies=[Depends(JWTBearer())]
   )
-def create_response(response: ResponseSchema) -> ResponseSchema:
+async def create_response(response: ResponseSchema) -> ResponseSchema:
   if response.id:
     response.id = None
   db = Session()
@@ -71,7 +71,7 @@ def create_response(response: ResponseSchema) -> ResponseSchema:
     response_model=ResponseSchema,
     dependencies=[Depends(JWTBearer())]
   )
-def update_response(id: int, response_update: ResponseUpdateSchema) -> ResponseSchema:
+async def update_response(id: int, response_update: ResponseUpdateSchema) -> ResponseSchema:
   db = Session()
   response = ResponseService(db).get_response(id)
   if not response:
@@ -89,7 +89,7 @@ def update_response(id: int, response_update: ResponseUpdateSchema) -> ResponseS
     status_code=status.HTTP_204_NO_CONTENT,
     dependencies=[Depends(JWTBearer())]
   )
-def delete_response(id: int):
+async def delete_response(id: int):
   db = Session()
   response = ResponseService(db).get_response(id)
   if not response:

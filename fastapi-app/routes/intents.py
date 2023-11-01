@@ -20,7 +20,7 @@ Base.metadata.create_all(bind=engine)
     response_model=List[IntentSchema],
     dependencies=[Depends(JWTBearer())]
   )
-def get_intents() -> List[IntentSchema]:
+async def get_intents() -> List[IntentSchema]:
   db = Session()
   result = IntentService(db).get_intents()
   if not result:
@@ -37,7 +37,7 @@ def get_intents() -> List[IntentSchema]:
     response_model=IntentSchema,
     dependencies=[Depends(JWTBearer())]
   )
-def get_intent(id: int) -> IntentSchema:
+async def get_intent(id: int) -> IntentSchema:
   db = Session()
   result = IntentService(db).get_intent(id)
   if not result:
@@ -54,7 +54,7 @@ def get_intent(id: int) -> IntentSchema:
     response_model=IntentSchema,
     dependencies=[Depends(JWTBearer())]
   )
-def create_intent(intent: IntentSchema) -> IntentSchema:
+async def create_intent(intent: IntentSchema) -> IntentSchema:
   if intent.id:
     intent.id = None
   db = Session()
@@ -71,7 +71,7 @@ def create_intent(intent: IntentSchema) -> IntentSchema:
     response_model=IntentSchema,
     dependencies=[Depends(JWTBearer())]
   )
-def update_intent(id: int, intent_update: IntentUpdateSchema) -> IntentSchema:
+async def update_intent(id: int, intent_update: IntentUpdateSchema) -> IntentSchema:
   db = Session()
   intent = IntentService(db).get_intent(id)
   if not intent:
@@ -89,7 +89,7 @@ def update_intent(id: int, intent_update: IntentUpdateSchema) -> IntentSchema:
     status_code=status.HTTP_204_NO_CONTENT,
     dependencies=[Depends(JWTBearer())]
   )
-def delete_intent(id: int):
+async def delete_intent(id: int):
   db = Session()
   intent = IntentService(db).get_intent(id)
   if not intent:

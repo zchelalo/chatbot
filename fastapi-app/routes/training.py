@@ -12,7 +12,10 @@ from services.steps_rule import StepRuleService
 # import yaml
 import ruamel.yaml
 
-import subprocess
+import os
+import shutil
+
+# import subprocess
 
 training_router = APIRouter()
 
@@ -31,7 +34,7 @@ rasa_server_process = None
     # response_model=IntentSchema,
     dependencies=[Depends(JWTBearer())]
   )
-def create_domain():
+async def create_domain():
   db = Session()
   intents = IntentService(db).get_intents()
 
@@ -68,15 +71,15 @@ def create_domain():
     }
   }
 
-  # Nombre del archivo domain
-  domain_filename = "domain.yml"
+  # Ruta completa al archivo domain.yml en el volumen compartido
+  domain_path = "/app/shared_data/domain.yml"
 
   # Escribir el contenido en un archivo YAML
   yaml = ruamel.yaml.YAML()
   yaml.width = 10000
   # yaml.explicit_start = True
 
-  with open(domain_filename, "w") as yaml_file:
+  with open(domain_path, "w") as yaml_file:
     yaml.dump(domain_data, yaml_file)
 
   return domain_data
@@ -91,7 +94,7 @@ def create_domain():
     # response_model=IntentSchema,
     dependencies=[Depends(JWTBearer())]
   )
-def create_nlu():
+async def create_nlu():
   db = Session()
   intents = IntentService(db).get_intents()
 
@@ -110,7 +113,7 @@ def create_nlu():
     )
 
   # Nombre del archivo NLU
-  nlu_filename = "data/nlu.yml"
+  nlu_filename = "/app/shared_data/data/nlu.yml"
 
   # Escribir el contenido en un archivo YAML
   yaml = ruamel.yaml.YAML()
@@ -141,7 +144,7 @@ def create_nlu():
     # response_model=IntentSchema,
     dependencies=[Depends(JWTBearer())]
   )
-def create_stories():
+async def create_stories():
   db = Session()
   steps = StepService(db).get_steps_story_and_intent()
 
@@ -178,7 +181,7 @@ def create_stories():
     stories_data["stories"].append(story_entry)
 
   # Nombre del archivo Stories
-  stories_filename = "data/stories.yml"
+  stories_filename = "/app/shared_data/data/stories.yml"
     
   # Escribir el contenido en un archivo YAML
   yaml = ruamel.yaml.YAML()
@@ -210,7 +213,7 @@ def create_stories():
     # response_model=IntentSchema,
     dependencies=[Depends(JWTBearer())]
   )
-def create_rules():
+async def create_rules():
   db = Session()
   steps = StepRuleService(db).get_step_rule_rule_and_intent()
 
@@ -247,7 +250,7 @@ def create_rules():
     rules_data["rules"].append(rule_entry)
 
   # Nombre del archivo Stories
-  rules_filename = "data/rules.yml"
+  rules_filename = "/app/shared_data/data/rules.yml"
     
   # Escribir el contenido en un archivo YAML
   yaml = ruamel.yaml.YAML()
@@ -279,7 +282,7 @@ def create_rules():
     # response_model=IntentSchema,
     dependencies=[Depends(JWTBearer())]
   )
-def create_model():
+async def create_model():
   # Comando para entrenar el modelo
   train_command = "rasa train"
 
@@ -296,49 +299,49 @@ def create_model():
 ############################################################################
 # Ejecutar el modelo
 ############################################################################
-@training_router.post(
-    path='/training/run', 
-    tags=['training'], 
-    status_code=status.HTTP_200_OK,
-    # response_model=IntentSchema,
-    dependencies=[Depends(JWTBearer())]
-  )
-def run_model():
-  global rasa_server_process
-  if rasa_server_process is None:
-    run_command = 'rasa run -m models --enable-api --cors "*"'
+# @training_router.post(
+#     path='/training/run', 
+#     tags=['training'], 
+#     status_code=status.HTTP_200_OK,
+#     # response_model=IntentSchema,
+#     dependencies=[Depends(JWTBearer())]
+#   )
+# async def run_model():
+#   global rasa_server_process
+#   if rasa_server_process is None:
+#     run_command = 'rasa run -m models --enable-api --cors "*"'
 
-    # Ejecutar el comando para iniciar el servidor de Rasa y esperar a que termine
-    rasa_server_process = subprocess.Popen(run_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    stdout, stderr = rasa_server_process.communicate()
+#     # Ejecutar el comando para iniciar el servidor de Rasa y esperar a que termine
+#     rasa_server_process = subprocess.Popen(run_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+#     stdout, stderr = rasa_server_process.communicate()
 
-    if rasa_server_process.returncode == 0:
-      return {'message': 'Servidor de Rasa en ejecución:\n' + stdout.decode()}
-    else:
-      return {'error': 'Error al iniciar el servidor Rasa:\n' + stderr.decode()}
-  else:
-    return {'message': 'El servidor de Rasa ya está en ejecución.'}
+#     if rasa_server_process.returncode == 0:
+#       return {'message': 'Servidor de Rasa en ejecución:\n' + stdout.decode()}
+#     else:
+#       return {'error': 'Error al iniciar el servidor Rasa:\n' + stderr.decode()}
+#   else:
+#     return {'message': 'El servidor de Rasa ya está en ejecución.'}
 
 
 ############################################################################
 # Cerrar el servidor http de rasa
 ############################################################################
-@training_router.post(
-    path='/training/shutdown', 
-    tags=['training'], 
-    status_code=status.HTTP_200_OK,
-    # response_model=IntentSchema,
-    dependencies=[Depends(JWTBearer())]
-  )
-def stop_model():
-  global rasa_server_process
-  if rasa_server_process is not None:
-    try:
-      rasa_server_process.terminate()  # Detener el proceso del servidor Rasa
-      rasa_server_process.wait()  # Esperar a que el proceso termine completamente
-      rasa_server_process = None
-      return {'message': 'Servidor de Rasa detenido exitosamente.'}
-    except Exception as e:
-      return {'error': 'Error al detener el servidor de Rasa: ' + str(e)}
-  else:
-      return {'message': 'El servidor de Rasa no está en ejecución.'}
+# @training_router.post(
+#     path='/training/shutdown', 
+#     tags=['training'], 
+#     status_code=status.HTTP_200_OK,
+#     # response_model=IntentSchema,
+#     dependencies=[Depends(JWTBearer())]
+#   )
+# async def stop_model():
+#   global rasa_server_process
+#   if rasa_server_process is not None:
+#     try:
+#       rasa_server_process.terminate()  # Detener el proceso del servidor Rasa
+#       rasa_server_process.wait()  # Esperar a que el proceso termine completamente
+#       rasa_server_process = None
+#       return {'message': 'Servidor de Rasa detenido exitosamente.'}
+#     except Exception as e:
+#       return {'error': 'Error al detener el servidor de Rasa: ' + str(e)}
+#   else:
+#       return {'message': 'El servidor de Rasa no está en ejecución.'}

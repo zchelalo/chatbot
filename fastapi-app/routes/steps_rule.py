@@ -20,7 +20,7 @@ Base.metadata.create_all(bind=engine)
     response_model=List[StepRuleSchema],
     dependencies=[Depends(JWTBearer())]
   )
-def get_steps_rule() -> List[StepRuleSchema]:
+async def get_steps_rule() -> List[StepRuleSchema]:
   db = Session()
   result = StepRuleService(db).get_steps_rule()
   if not result:
@@ -37,7 +37,7 @@ def get_steps_rule() -> List[StepRuleSchema]:
     response_model=StepRuleSchema,
     dependencies=[Depends(JWTBearer())]
   )
-def get_step_rule(id: int) -> StepRuleSchema:
+async def get_step_rule(id: int) -> StepRuleSchema:
   db = Session()
   result = StepRuleService(db).get_step_rule(id)
   if not result:
@@ -54,7 +54,7 @@ def get_step_rule(id: int) -> StepRuleSchema:
     response_model=StepRuleSchema,
     dependencies=[Depends(JWTBearer())]
   )
-def create_step_rule(step_rule: StepRuleSchema) -> StepRuleSchema:
+async def create_step_rule(step_rule: StepRuleSchema) -> StepRuleSchema:
   if step_rule.id:
     step_rule.id = None
   db = Session()
@@ -71,7 +71,7 @@ def create_step_rule(step_rule: StepRuleSchema) -> StepRuleSchema:
     response_model=StepRuleSchema,
     dependencies=[Depends(JWTBearer())]
   )
-def update_step_rule(id: int, step_rule_update: StepRuleUpdateSchema) -> StepRuleSchema:
+async def update_step_rule(id: int, step_rule_update: StepRuleUpdateSchema) -> StepRuleSchema:
   db = Session()
   step_rule = StepRuleService(db).get_step_rule(id)
   if not step_rule:
@@ -89,7 +89,7 @@ def update_step_rule(id: int, step_rule_update: StepRuleUpdateSchema) -> StepRul
     status_code=status.HTTP_204_NO_CONTENT,
     dependencies=[Depends(JWTBearer())]
   )
-def delete_step_rule(id: int):
+async def delete_step_rule(id: int):
   db = Session()
   step_rule = StepRuleService(db).get_step_rule(id)
   if not step_rule:

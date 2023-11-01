@@ -1,0 +1,9 @@
+fastapi==0.103.2
+passlib==1.7.4
+psycopg2-binary==2.9.9
+PyJWT==2.8.0
+python-dotenv==1.0.0
+SQLAlchemy==1.4.49
+uvicorn==0.23.2
+psutil==5.9.6
+ruamel.yaml==0.17.21

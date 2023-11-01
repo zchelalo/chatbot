@@ -21,7 +21,7 @@ Base.metadata.create_all(bind=engine)
     response_model=List[UsuarioSchema],
     dependencies=[Depends(JWTBearer())]
   )
-def get_usuarios() -> List[UsuarioSchema]:
+async def get_usuarios() -> List[UsuarioSchema]:
   db = Session()
   result = UsuarioService(db).get_usuarios()
   if not result:
@@ -39,7 +39,7 @@ def get_usuarios() -> List[UsuarioSchema]:
     response_model=UsuarioSchema,
     dependencies=[Depends(JWTBearer())]
   )
-def get_usuario(matricula: int) -> UsuarioSchema:
+async def get_usuario(matricula: int) -> UsuarioSchema:
   db = Session()
   result = UsuarioService(db).get_usuario(matricula)
   if not result:
@@ -57,7 +57,7 @@ def get_usuario(matricula: int) -> UsuarioSchema:
     response_model=UsuarioSchema,
     dependencies=[Depends(JWTBearer())]
   )
-def create_usuario(usuario: UsuarioSchema) -> UsuarioSchema:
+async def create_usuario(usuario: UsuarioSchema) -> UsuarioSchema:
   password = sha256_crypt.hash(usuario.password)
   usuario.password = password
   db = Session()
@@ -75,7 +75,7 @@ def create_usuario(usuario: UsuarioSchema) -> UsuarioSchema:
     response_model=UsuarioSchema,
     dependencies=[Depends(JWTBearer())]
   )
-def update_usuario(matricula: int, usuario_update: UsuarioUpdateSchema) -> UsuarioSchema:
+async def update_usuario(matricula: int, usuario_update: UsuarioUpdateSchema) -> UsuarioSchema:
   db = Session()
   usuario = UsuarioService(db).get_usuario(matricula)
   if not usuario:
@@ -99,7 +99,7 @@ def update_usuario(matricula: int, usuario_update: UsuarioUpdateSchema) -> Usuar
     status_code=status.HTTP_204_NO_CONTENT,
     dependencies=[Depends(JWTBearer())]
   )
-def delete_usuario(matricula: int):
+async def delete_usuario(matricula: int):
   db = Session()
   usuario = UsuarioService(db).get_usuario(matricula)
   if not usuario:

@@ -3,98 +3,98 @@ from starlette.status import HTTP_204_NO_CONTENT, HTTP_404_NOT_FOUND, HTTP_200_O
 from typing import List
 from middlewares.jwt_bearer import JWTBearer
 from config.database import Session, engine, Base
-from services.stories import StoryService
-from schemas.stories import Story as StorySchema, StoryUpdate as StoryUpdateSchema
+from services.steps import StepService
+from schemas.steps import Step as StepSchema, StepUpdate as StepUpdateSchema
 
-story_router = APIRouter()
+step_router = APIRouter()
 
 Base.metadata.create_all(bind=engine)
 
 ############################################################################
 # Obtener todos los registros
 ############################################################################
-@story_router.get(
-    path='/stories', 
-    tags=['stories'], 
+@step_router.get(
+    path='/steps', 
+    tags=['steps'], 
     status_code=status.HTTP_200_OK,
-    response_model=List[StorySchema],
+    response_model=List[StepSchema],
     dependencies=[Depends(JWTBearer())]
   )
-def get_stories() -> List[StorySchema]:
+async def get_steps() -> List[StepSchema]:
   db = Session()
-  result = StoryService(db).get_stories()
+  result = StepService(db).get_steps()
   if not result:
-      raise HTTPException(status_code=HTTP_404_NOT_FOUND, detail={'message': 'No se encontraron historias'})
+      raise HTTPException(status_code=HTTP_404_NOT_FOUND, detail={'message': 'No se encontraron pasos'})
   return result
 
 ############################################################################
 # Obtener un registro en base al ID
 ############################################################################
-@story_router.get(
-    path='/stories/{id}', 
-    tags=['stories'], 
+@step_router.get(
+    path='/steps/{id}', 
+    tags=['steps'], 
     status_code=status.HTTP_200_OK,
-    response_model=StorySchema,
+    response_model=StepSchema,
     dependencies=[Depends(JWTBearer())]
   )
-def get_story(id: int) -> StorySchema:
+async def get_step(id: int) -> StepSchema:
   db = Session()
-  result = StoryService(db).get_story(id)
+  result = StepService(db).get_step(id)
   if not result:
-    raise HTTPException(status_code=HTTP_404_NOT_FOUND, detail={'message': 'No se encontró la historia'})
+    raise HTTPException(status_code=HTTP_404_NOT_FOUND, detail={'message': 'No se encontró el paso'})
   return result
 
 ############################################################################
 # Insertar un registro
 ############################################################################
-@story_router.post(
-    path='/stories', 
-    tags=['stories'], 
+@step_router.post(
+    path='/steps', 
+    tags=['steps'], 
     status_code=status.HTTP_200_OK,
-    response_model=StorySchema,
+    response_model=StepSchema,
     dependencies=[Depends(JWTBearer())]
   )
-def create_story(story: StorySchema) -> StorySchema:
-  if story.id:
-    story.id = None
+async def create_step(step: StepSchema) -> StepSchema:
+  if step.id:
+    step.id = None
   db = Session()
-  new_story = StoryService(db).create_story(story)
-  return new_story
+  new_step = StepService(db).create_step(step)
+  return new_step
 
 ############################################################################
 # Actualizar un registro
 ############################################################################
-@story_router.put(
-    path='/stories/{id}', 
-    tags=['stories'], 
+@step_router.put(
+    path='/steps/{id}', 
+    tags=['steps'], 
     status_code=status.HTTP_200_OK,
-    response_model=StorySchema,
+    response_model=StepSchema,
     dependencies=[Depends(JWTBearer())]
   )
-def update_story(id: int, story_update: StoryUpdateSchema) -> StorySchema:
+async def update_step(id: int, step_update: StepUpdateSchema) -> StepSchema:
   db = Session()
-  story = StoryService(db).get_story(id)
-  if not story:
-    raise HTTPException(status_code=HTTP_404_NOT_FOUND, detail={'message': 'No se encontró la historia'})
+  step = StepService(db).get_step(id)
+  if not step:
+    raise HTTPException(status_code=HTTP_404_NOT_FOUND, detail={'message': 'No se encontró el paso'})
   
-  result = StoryService(db).update_story(story, story_update)
+  result = StepService(db).update_step(step, step_update)
   return result
 
 ############################################################################
 # Borrar un registro
 ############################################################################
-@story_router.delete(
-    path='/stories/{id}', 
-    tags=['stories'], 
+@step_router.delete(
+    path='/steps/{id}', 
+    tags=['steps'], 
     status_code=status.HTTP_204_NO_CONTENT,
     dependencies=[Depends(JWTBearer())]
   )
-def delete_story(id: int):
+async def delete_step(id: int):
   db = Session()
-  story = StoryService(db).get_story(id)
-  if not story:
-    raise HTTPException(status_code=HTTP_404_NOT_FOUND, detail={'message': 'No se encontró la historia'})
+  step = StepService(db).get_step(id)
+  if not step:
+    raise HTTPException(status_code=HTTP_404_NOT_FOUND, detail={'message': 'No se encontró el paso'})
   
-  StoryService(db).delete_story(story)
+  StepService(db).delete_step(step)
 
   return Response(status_code=HTTP_204_NO_CONTENT)
