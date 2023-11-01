@@ -13,7 +13,6 @@ services:
       sql_db:
         condition: service_healthy
     command: sh -c "python main.py"
-    # command: sh -c "python src/main.py & rasa run -m models --enable-api --cors '*'"
 
   rasa:
     build: ./rasa-app

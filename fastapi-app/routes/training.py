@@ -15,7 +15,7 @@ import ruamel.yaml
 import os
 import shutil
 
-# import subprocess
+import subprocess
 
 training_router = APIRouter()
 
@@ -299,49 +299,17 @@ async def create_model():
 ############################################################################
 # Ejecutar el modelo
 ############################################################################
-# @training_router.post(
-#     path='/training/run', 
-#     tags=['training'], 
-#     status_code=status.HTTP_200_OK,
-#     # response_model=IntentSchema,
-#     dependencies=[Depends(JWTBearer())]
-#   )
-# async def run_model():
-#   global rasa_server_process
-#   if rasa_server_process is None:
-#     run_command = 'rasa run -m models --enable-api --cors "*"'
-
-#     # Ejecutar el comando para iniciar el servidor de Rasa y esperar a que termine
-#     rasa_server_process = subprocess.Popen(run_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-#     stdout, stderr = rasa_server_process.communicate()
-
-#     if rasa_server_process.returncode == 0:
-#       return {'message': 'Servidor de Rasa en ejecución:\n' + stdout.decode()}
-#     else:
-#       return {'error': 'Error al iniciar el servidor Rasa:\n' + stderr.decode()}
-#   else:
-#     return {'message': 'El servidor de Rasa ya está en ejecución.'}
-
-
-############################################################################
-# Cerrar el servidor http de rasa
-############################################################################
-# @training_router.post(
-#     path='/training/shutdown', 
-#     tags=['training'], 
-#     status_code=status.HTTP_200_OK,
-#     # response_model=IntentSchema,
-#     dependencies=[Depends(JWTBearer())]
-#   )
-# async def stop_model():
-#   global rasa_server_process
-#   if rasa_server_process is not None:
-#     try:
-#       rasa_server_process.terminate()  # Detener el proceso del servidor Rasa
-#       rasa_server_process.wait()  # Esperar a que el proceso termine completamente
-#       rasa_server_process = None
-#       return {'message': 'Servidor de Rasa detenido exitosamente.'}
-#     except Exception as e:
-#       return {'error': 'Error al detener el servidor de Rasa: ' + str(e)}
-#   else:
-#       return {'message': 'El servidor de Rasa no está en ejecución.'}
+@training_router.post(
+    path='/training/restart_rasa', 
+    tags=['training'], 
+    status_code=status.HTTP_200_OK,
+    # response_model=IntentSchema,
+    dependencies=[Depends(JWTBearer())]
+  )
+async def restart_rasa():
+  try:
+    # Ejecutar el comando de docker-compose para reiniciar el servicio Rasa
+    subprocess.run(["docker-compose", "-f", "../docker-compose.yml", "restart", "rasa"], check=True, text=True)
+    return {"message": "Servicio Rasa reiniciado con éxito"}
+  except subprocess.CalledProcessError as e:
+    return {"error": f"Error al reiniciar el servicio Rasa: {e.stderr}"}
