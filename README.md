@@ -1,21 +1,53 @@
-# Aún en desarrollo  
-## -- BACKEND --  
-- [ ] Crear la base de datos para entrenar al bot desde ella.  
+# chatbot
+Chatbot desarrollado con Rasa, FastAPI, PostgreSQL, React (en proceso), un reverse proxy en Nginx, y todo se ejecuta mediante docker.
   
-- [ ] Añadir una tabla de mensajes la cual tendrá como finalidad el registrar los mensajes enviados por usuario y bot. Está tendrá campos como ID, clave, rol del mensaje (bot o usuario), contenido del mensaje, fecha y hora del mensaje.  
-Así puedo crear historias realistas al chatbot. Claro, con el contenido del mensaje por parte del usuario obtengo la intención del bot, después comparo la respuesta del bot con la proporcionada, si son iguales se da como positivo y se puede continuar con la creación de la story, si da negativo no se creará una story con esa serie de mensajes.  
+## **Instalación:**  
+Para probar el chatbot debe tener instalado docker, una vez con eso listo clone el proyecto:  
+```bash  
+git clone https://github.com/zchelalo/chatbot.git
+```  
   
-- [ ] Añadir una tabla de calificación, en esta a la hora de que se califique un mensaje ya sea de forma positiva o de forma negativa, se registrará en la base de datos. Tendrá ID, ID intención, mensaje usuario, calificación (positiva o negativa), fecha y hora de la calificación.  
-Cuando se califique un mensaje, este le hablará a algún método de la API, en el cual se le enviará tanto el mensaje del usuario como del bot, con el fin de sacar la intención desde la API ya que no la da directamente, se compararán las respuesta del bot para saber si son iguales y así guardar la información.  
+Antes de continuar debe tener en cuenta que el nombre de la base de datos, la contraseña y el host vienen predefinidos en el archivo "docker-compose.yml", si quiere hacer algún cambio deberá hacerlo en ese archivo.  
   
-## -- FRONTEND --  
-- [ ] Primeramente, el chatbot estará presente en la gran mayoría de las páginas, en forma de un pequeño icono en la esquina inferior derecha de la pantalla, así se tiene acceso a él de una forma cómoda y con disponibilidad en todo momento.  
+A continuación puede cambiar la JWT_KEY del archivo ".env.example" por una más segura, esta se utiliza para la autenticación de los usuarios.  
   
-- [ ] Al momento de clikear en él se cambiara el icono de Grajillo por el de un símbolo de enviar, a la par que se abrirá el propio chat con un saludo y unas propuestas de mensaje para enviarle.  
+Seguido de esto solo cambie el nombre del archivo ".env.example" quitandole el ".example".  
   
-- [ ] La interfaz reaccionará según sea necesario, si se necesita de una imágen, documento o instrucción, estarán. Estás se podrán clickar para abrirlas en grande, a la vez de poder descargarlas.  
+Despues de ello asegurese de estar dentro de la carpeta del proyecto y ejecute el siguiente comando:  
+```bash  
+docker compose up
+```  
   
-- [ ] Abajo de cada mensaje o serie de mensajes por parte del bot habrá un recuadro alineado a la derecha el cual diga "¿Fue útil el mensaje?" con un icono de una manita hacia arriba y uno de manita hacia abajo, con el fin de calificar la respuesta del bot.  
+Es posible que según la versión de docker que tenga o donde lo tenga, tendrá que ejecutar el siguiente comando en lugar del anterior:  
+```bash  
+docker-compose up
+``` 
   
-*- Posibilidades a tomar en cuenta -*  
-Existe la posibilidad de que cuando se califique un mensaje de forma negativa se guarde la respuesta del usuario como un ejemplo el cual no da ninguna respuesta. Al momento de guardar ejemplos sin intención en el archivo de NLU estos son considerados neutros o que no deben accionar ante ninguna intención.  
+Despues de que se haya hecho la build y esten en ejecución los servicios de nginx, fastapi, rasa, postgres y react (de momento no esta), es momento de probar el chatbot en la URL [http://localhost/fastapi](http://localhost/fastapi) en la cual esta alojado el servidor de fastapi por el cual se entrena al bot y se interactua con él.
+  
+## **Documentación:**  
+Para poder ver la documentación a la vez que probar la API REST del chatbot nos podremos dirigir a [http://localhost:8000/docs](http://localhost:8000/docs) una vez que nuestro servidor este activo.  
+  
+En esta ruta se podrán ver todos los endpoints de la API y podremos probar cada uno de ellos desde ahí mismo, siendo esto muy útil a la hora de testear.  
+  
+Se utiliza Swagger para documentar la API, de esta forma se ordenan los endpoints en bloques a la misma vez que se documenta su utilidad y funcionamiento.  
+  
+Para poner en funcionamiento el sistema necesita hacer lo siguiente:  
+1. Primeramente creará un usuario en su correspondiente endpoint, este no necesitará de autenticación la primera vez.  
+2. Después se dirigirá al endpoint de auth, en el cual ingresará sus credenciales (email, password), y si todo salio bien le devolverá un token.
+3. Copiará el token recibido y dará click en el boton de authorize (tambien puede hacerlo dando click en los candaditos que hay en cada endpoint).  
+  
+![Muestra del botón](/img/img-auth.png)  
+  
+4. Seguido de esto ingresará el token copiado en el campo que se muestra a continuación:  
+  
+![Muestra autenticación](/img/img-auth-2.png)  
+  
+5. Con esto hecho solo de click en "Authorize" y podrá probar la aplicación. Tome en cuenta que el proceso de poner el token de autenticación lo tendrá que repetir cada que recargue la página.  
+  
+## **Funcionamiento del chatbot**
+Para poner en funcionamiento el chatbot primero ingrese en la base de datos intents, responses, rules, steps_rule, stories y steps_story.  
+  
+Seguido de esto genere los siguientes archivos: domain.yml, nlu.yml, rules.yml e stories.yml, tenga en cuenta que ya existen unos endpoint en la API de FastAPI que hacen esto con solo hacer una petición POST.  
+  
+Después creará el modelo para el chatbot, parará el proceso de rasa y cuando termine totalmente lo iniciará de nuevo. Solo queda probar el chatbot enviandole algún mensaje mediante su endpoint correspondiente.
