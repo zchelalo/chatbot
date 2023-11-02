@@ -1,5 +1,5 @@
 from fastapi import APIRouter, status, HTTPException
-from starlette.status import HTTP_200_OK
+from starlette.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 from dotenv import load_dotenv
 import os
 import httpx
@@ -20,14 +20,18 @@ RUTA_RASA = os.getenv("RUTA_RASA")
     tags=['chatbot'], 
     status_code=status.HTTP_200_OK
   )
-async def talk_to_chatbot(message: str):
+async def talk_to_chatbot(request_data: dict):
   try:
-    async with httpx.AsyncClient() as client:
-      response = await client.post(RUTA_RASA, json={"sender": "user", "message": message})
-    if response.status_code == 200:
-      data = response.json()
-      return data[0]
+    message = request_data.get("message")
+    if message:
+      async with httpx.AsyncClient() as client:
+        response = await client.post(RUTA_RASA, json={"sender": "user", "message": message})
+      if response.status_code == 200:
+        data = response.json()
+        return data[0]
+      else:
+        raise HTTPException(status_code=response.status_code, detail={'error': 'Error al realizar la solicitud', 'message': response.text})
     else:
-      raise HTTPException(status_code=response.status_code, detail={'error': 'Error al realizar la solicitud', 'message': response.text})
+      raise HTTPException(status_code=HTTP_400_BAD_REQUEST, detail={'error': 'El campo "message" es requerido en el cuerpo de la solicitud'})
   except Exception as e:
     return {'error': str(e)}
