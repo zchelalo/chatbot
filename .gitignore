@@ -5,3 +5,5 @@ __pycache__
 DB
 rasa-app/models/*
 !rasa-app/models/.gitkeep
+fastapi-app/shared_data
+rasa-app/shared_data
