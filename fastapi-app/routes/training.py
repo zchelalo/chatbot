@@ -12,17 +12,11 @@ from services.steps_rule import StepRuleService
 # import yaml
 import ruamel.yaml
 
-import os
-import shutil
-
-import subprocess
+import docker
 
 training_router = APIRouter()
 
 Base.metadata.create_all(bind=engine)
-
-# Define una variable global para almacenar el proceso del servidor Rasa
-rasa_server_process = None
 
 ############################################################################
 # Crear domain.yml
@@ -275,6 +269,9 @@ async def create_rules():
 ############################################################################
 # Crear el modelo
 ############################################################################
+# Crea el cliente de Docker
+client = docker.from_env()
+
 @training_router.post(
     path='/training/model', 
     tags=['training'], 
@@ -283,33 +280,53 @@ async def create_rules():
     dependencies=[Depends(JWTBearer())]
   )
 async def create_model():
-  # Comando para entrenar el modelo
-  train_command = "rasa train"
+  try:
+    # Obtén el contenedor de Rasa por su nombre o ID
+    rasa_container = client.containers.get("rasa_app")
 
-  # Ejecutar el comando
-  process = subprocess.Popen(train_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-  stdout, stderr = process.communicate()
+    # Ejecuta el comando "rasa train" en el contenedor
+    exec_command = rasa_container.exec_run(["rasa", "train", "-d", "/app/shared_data/domain.yml", "--data", "/app/shared_data/data"])
 
-  # Comprobar el resultado
-  if process.returncode == 0:
-    return {'message': "Modelo entrenado con éxito"}
-  else:
-    return {'error': "Error al entrenar el modelo" + stderr.decode()}
+    # Obtiene la salida y el código de salida
+    output = exec_command.output.decode()
+    exit_code = exec_command.exit_code
+
+    return {"output": output, "exit_code": exit_code}
+  except Exception as e:
+    return {"error": str(e)}
 
 ############################################################################
-# Ejecutar el modelo
+# Parar rasa
 ############################################################################
 @training_router.post(
-    path='/training/restart_rasa', 
+    path='/training/stop', 
     tags=['training'], 
     status_code=status.HTTP_200_OK,
     # response_model=IntentSchema,
     dependencies=[Depends(JWTBearer())]
   )
-async def restart_rasa():
+async def stop_rasa():
   try:
-    # Ejecutar el comando de docker-compose para reiniciar el servicio Rasa
-    subprocess.run(["docker-compose", "-f", "../docker-compose.yml", "restart", "rasa"], check=True, text=True)
-    return {"message": "Servicio Rasa reiniciado con éxito"}
-  except subprocess.CalledProcessError as e:
-    return {"error": f"Error al reiniciar el servicio Rasa: {e.stderr}"}
+    rasa_container = client.containers.get("rasa_app")
+    rasa_container.stop()
+    return {"message": "El servicio de Rasa termino de forma exitosa"}
+  except Exception as e:
+    return {"error": str(e)}
+
+############################################################################
+# Iniciar rasa
+############################################################################
+@training_router.post(
+    path='/training/start', 
+    tags=['training'], 
+    status_code=status.HTTP_200_OK,
+    # response_model=IntentSchema,
+    dependencies=[Depends(JWTBearer())]
+  )
+async def start_rasa():
+  try:
+    rasa_container = client.containers.get("rasa_app")
+    rasa_container.start()
+    return {"message": "El servicio de Rasa inicio de forma exitosa"}
+  except Exception as e:
+    return {"error": str(e)}

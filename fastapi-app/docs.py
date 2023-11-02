@@ -34,5 +34,9 @@ tags_metadata = [
   {
     "name": "steps_rule",
     "description": "Rutas para los pasos de las reglas"
+  },
+  {
+    "name": "chatbot",
+    "description": "Rutas para interactuar con el chatbot"
   }
 ]

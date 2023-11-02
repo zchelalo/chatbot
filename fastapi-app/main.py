@@ -13,6 +13,7 @@ from routes.steps import step_router
 from routes.rules import rule_router
 from routes.steps_rule import step_rule_router
 from routes.training import training_router
+from routes.chatbot import chatbot_router
 
 import os
 import uvicorn
@@ -47,3 +48,4 @@ app.include_router(step_router)
 app.include_router(rule_router)
 app.include_router(step_rule_router)
 app.include_router(training_router)
+app.include_router(chatbot_router)

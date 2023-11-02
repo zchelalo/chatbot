@@ -21,6 +21,7 @@ services:
     volumes:
       - ./fastapi-app:/app
       - ./shared_data:/app/shared_data
+      - /var/run/docker.sock:/var/run/docker.sock
     depends_on:
       sql_db:
         condition: service_healthy
