@@ -17,6 +17,10 @@ class UsuarioService():
     result = self.db.query(UsuarioModel).where(UsuarioModel.correo == correo).one_or_none()
     return result
   
+  def get_usuario_by_matricula(self, matricula):
+    result = self.db.query(UsuarioModel).where(UsuarioModel.matricula == matricula).one_or_none()
+    return result
+  
   def get_usuario_random(self):
     result = self.db.query(UsuarioModel).limit(1).one_or_none()
     return result

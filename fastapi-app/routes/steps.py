@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Response, status, HTTPException, Depends
 from starlette.status import HTTP_204_NO_CONTENT, HTTP_404_NOT_FOUND, HTTP_200_OK
 from typing import List
-from middlewares.jwt_bearer import JWTBearer
+from middlewares.jwt_bearer import TrainerRoleBearer
 from config.database import Session, engine, Base
 from services.steps import StepService
 from schemas.steps import Step as StepSchema, StepUpdate as StepUpdateSchema
@@ -18,7 +18,7 @@ Base.metadata.create_all(bind=engine)
     tags=['steps'], 
     status_code=status.HTTP_200_OK,
     response_model=List[StepSchema],
-    dependencies=[Depends(JWTBearer())]
+    dependencies=[Depends(TrainerRoleBearer())]
   )
 async def get_steps() -> List[StepSchema]:
   db = Session()
@@ -35,7 +35,7 @@ async def get_steps() -> List[StepSchema]:
     tags=['steps'], 
     status_code=status.HTTP_200_OK,
     response_model=StepSchema,
-    dependencies=[Depends(JWTBearer())]
+    dependencies=[Depends(TrainerRoleBearer())]
   )
 async def get_step(id: int) -> StepSchema:
   db = Session()
@@ -52,7 +52,7 @@ async def get_step(id: int) -> StepSchema:
     tags=['steps'], 
     status_code=status.HTTP_200_OK,
     response_model=StepSchema,
-    dependencies=[Depends(JWTBearer())]
+    dependencies=[Depends(TrainerRoleBearer())]
   )
 async def create_step(step: StepSchema) -> StepSchema:
   if step.id:
@@ -69,7 +69,7 @@ async def create_step(step: StepSchema) -> StepSchema:
     tags=['steps'], 
     status_code=status.HTTP_200_OK,
     response_model=StepSchema,
-    dependencies=[Depends(JWTBearer())]
+    dependencies=[Depends(TrainerRoleBearer())]
   )
 async def update_step(id: int, step_update: StepUpdateSchema) -> StepSchema:
   db = Session()
@@ -87,7 +87,7 @@ async def update_step(id: int, step_update: StepUpdateSchema) -> StepSchema:
     path='/steps/{id}', 
     tags=['steps'], 
     status_code=status.HTTP_204_NO_CONTENT,
-    dependencies=[Depends(JWTBearer())]
+    dependencies=[Depends(TrainerRoleBearer())]
   )
 async def delete_step(id: int):
   db = Session()

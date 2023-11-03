@@ -25,8 +25,13 @@ async def login(usuario: UsuarioAuthSchema) -> dict:
     raise HTTPException(status_code=HTTP_404_NOT_FOUND, detail={'message': 'No se encontró el usuario'})
 
   if sha256_crypt.verify(password, result.password):
-    token: str = create_token(usuario.model_dump())
-    # return {'token': token}
+    user = {
+      'matricula': result.matricula,
+      'rol': result.rol
+    }
+    expiration_time = 120
+    token: str = create_token(user, expiration_time)
+    
     return JSONResponse(status_code=HTTP_200_OK, content={'token': token})
   else:
     raise HTTPException(status_code=HTTP_401_UNAUTHORIZED, detail={'message': 'Credenciales incorrectas'})

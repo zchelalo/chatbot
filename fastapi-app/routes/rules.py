@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Response, status, HTTPException, Depends
 from starlette.status import HTTP_204_NO_CONTENT, HTTP_404_NOT_FOUND, HTTP_200_OK
 from typing import List
-from middlewares.jwt_bearer import JWTBearer
+from middlewares.jwt_bearer import TrainerRoleBearer
 from config.database import Session, engine, Base
 from services.rules import RuleService
 from schemas.rules import Rule as RuleSchema, RuleUpdate as RuleUpdateSchema
@@ -18,7 +18,7 @@ Base.metadata.create_all(bind=engine)
     tags=['rules'], 
     status_code=status.HTTP_200_OK,
     response_model=List[RuleSchema],
-    dependencies=[Depends(JWTBearer())]
+    dependencies=[Depends(TrainerRoleBearer())]
   )
 async def get_rules() -> List[RuleSchema]:
   db = Session()
@@ -35,7 +35,7 @@ async def get_rules() -> List[RuleSchema]:
     tags=['rules'], 
     status_code=status.HTTP_200_OK,
     response_model=RuleSchema,
-    dependencies=[Depends(JWTBearer())]
+    dependencies=[Depends(TrainerRoleBearer())]
   )
 async def get_rule(id: int) -> RuleSchema:
   db = Session()
@@ -52,7 +52,7 @@ async def get_rule(id: int) -> RuleSchema:
     tags=['rules'], 
     status_code=status.HTTP_200_OK,
     response_model=RuleSchema,
-    dependencies=[Depends(JWTBearer())]
+    dependencies=[Depends(TrainerRoleBearer())]
   )
 async def create_rule(rule: RuleSchema) -> RuleSchema:
   if rule.id:
@@ -69,7 +69,7 @@ async def create_rule(rule: RuleSchema) -> RuleSchema:
     tags=['rules'], 
     status_code=status.HTTP_200_OK,
     response_model=RuleSchema,
-    dependencies=[Depends(JWTBearer())]
+    dependencies=[Depends(TrainerRoleBearer())]
   )
 async def update_rule(id: int, rule_update: RuleUpdateSchema) -> RuleSchema:
   db = Session()
@@ -87,7 +87,7 @@ async def update_rule(id: int, rule_update: RuleUpdateSchema) -> RuleSchema:
     path='/rules/{id}', 
     tags=['rules'], 
     status_code=status.HTTP_204_NO_CONTENT,
-    dependencies=[Depends(JWTBearer())]
+    dependencies=[Depends(TrainerRoleBearer())]
   )
 async def delete_rule(id: int):
   db = Session()

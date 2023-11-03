@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Response, status, HTTPException, Depends
 from starlette.status import HTTP_204_NO_CONTENT, HTTP_404_NOT_FOUND, HTTP_200_OK
 from typing import List
-from middlewares.jwt_bearer import JWTBearer
+from middlewares.jwt_bearer import TrainerRoleBearer
 from config.database import Session, engine, Base
 from services.steps_rule import StepRuleService
 from schemas.steps_rule import StepRule as StepRuleSchema, StepRuleUpdate as StepRuleUpdateSchema
@@ -18,7 +18,7 @@ Base.metadata.create_all(bind=engine)
     tags=['steps_rule'], 
     status_code=status.HTTP_200_OK,
     response_model=List[StepRuleSchema],
-    dependencies=[Depends(JWTBearer())]
+    dependencies=[Depends(TrainerRoleBearer())]
   )
 async def get_steps_rule() -> List[StepRuleSchema]:
   db = Session()
@@ -35,7 +35,7 @@ async def get_steps_rule() -> List[StepRuleSchema]:
     tags=['steps_rule'], 
     status_code=status.HTTP_200_OK,
     response_model=StepRuleSchema,
-    dependencies=[Depends(JWTBearer())]
+    dependencies=[Depends(TrainerRoleBearer())]
   )
 async def get_step_rule(id: int) -> StepRuleSchema:
   db = Session()
@@ -52,7 +52,7 @@ async def get_step_rule(id: int) -> StepRuleSchema:
     tags=['steps_rule'], 
     status_code=status.HTTP_200_OK,
     response_model=StepRuleSchema,
-    dependencies=[Depends(JWTBearer())]
+    dependencies=[Depends(TrainerRoleBearer())]
   )
 async def create_step_rule(step_rule: StepRuleSchema) -> StepRuleSchema:
   if step_rule.id:
@@ -69,7 +69,7 @@ async def create_step_rule(step_rule: StepRuleSchema) -> StepRuleSchema:
     tags=['steps_rule'], 
     status_code=status.HTTP_200_OK,
     response_model=StepRuleSchema,
-    dependencies=[Depends(JWTBearer())]
+    dependencies=[Depends(TrainerRoleBearer())]
   )
 async def update_step_rule(id: int, step_rule_update: StepRuleUpdateSchema) -> StepRuleSchema:
   db = Session()
@@ -87,7 +87,7 @@ async def update_step_rule(id: int, step_rule_update: StepRuleUpdateSchema) -> S
     path='/steps_rule/{id}', 
     tags=['steps_rule'], 
     status_code=status.HTTP_204_NO_CONTENT,
-    dependencies=[Depends(JWTBearer())]
+    dependencies=[Depends(TrainerRoleBearer())]
   )
 async def delete_step_rule(id: int):
   db = Session()

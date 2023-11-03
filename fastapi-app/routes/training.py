@@ -1,6 +1,6 @@
 from fastapi import APIRouter, status, Depends
 from starlette.status import HTTP_200_OK
-from middlewares.jwt_bearer import JWTBearer
+from middlewares.jwt_bearer import AdminRoleBearer
 from config.database import Session, engine, Base
 
 from services.usuarios import UsuarioService
@@ -26,7 +26,7 @@ Base.metadata.create_all(bind=engine)
     tags=['training'], 
     status_code=status.HTTP_200_OK,
     # response_model=IntentSchema,
-    dependencies=[Depends(JWTBearer())]
+    dependencies=[Depends(AdminRoleBearer())]
   )
 async def create_domain():
   db = Session()
@@ -86,7 +86,7 @@ async def create_domain():
     tags=['training'], 
     status_code=status.HTTP_200_OK,
     # response_model=IntentSchema,
-    dependencies=[Depends(JWTBearer())]
+    dependencies=[Depends(AdminRoleBearer())]
   )
 async def create_nlu():
   db = Session()
@@ -136,7 +136,7 @@ async def create_nlu():
     tags=['training'], 
     status_code=status.HTTP_200_OK,
     # response_model=IntentSchema,
-    dependencies=[Depends(JWTBearer())]
+    dependencies=[Depends(AdminRoleBearer())]
   )
 async def create_stories():
   db = Session()
@@ -205,7 +205,7 @@ async def create_stories():
     tags=['training'], 
     status_code=status.HTTP_200_OK,
     # response_model=IntentSchema,
-    dependencies=[Depends(JWTBearer())]
+    dependencies=[Depends(AdminRoleBearer())]
   )
 async def create_rules():
   db = Session()
@@ -277,7 +277,7 @@ client = docker.from_env()
     tags=['training'], 
     status_code=status.HTTP_200_OK,
     # response_model=IntentSchema,
-    dependencies=[Depends(JWTBearer())]
+    dependencies=[Depends(AdminRoleBearer())]
   )
 async def create_model():
   try:
@@ -303,7 +303,7 @@ async def create_model():
     tags=['training'], 
     status_code=status.HTTP_200_OK,
     # response_model=IntentSchema,
-    dependencies=[Depends(JWTBearer())]
+    dependencies=[Depends(AdminRoleBearer())]
   )
 async def stop_rasa():
   try:
@@ -321,7 +321,7 @@ async def stop_rasa():
     tags=['training'], 
     status_code=status.HTTP_200_OK,
     # response_model=IntentSchema,
-    dependencies=[Depends(JWTBearer())]
+    dependencies=[Depends(AdminRoleBearer())]
   )
 async def start_rasa():
   try:

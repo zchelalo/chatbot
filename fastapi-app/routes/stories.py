@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Response, status, HTTPException, Depends
 from starlette.status import HTTP_204_NO_CONTENT, HTTP_404_NOT_FOUND, HTTP_200_OK
 from typing import List
-from middlewares.jwt_bearer import JWTBearer
+from middlewares.jwt_bearer import TrainerRoleBearer
 from config.database import Session, engine, Base
 from services.stories import StoryService
 from schemas.stories import Story as StorySchema, StoryUpdate as StoryUpdateSchema
@@ -18,7 +18,7 @@ Base.metadata.create_all(bind=engine)
     tags=['stories'], 
     status_code=status.HTTP_200_OK,
     response_model=List[StorySchema],
-    dependencies=[Depends(JWTBearer())]
+    dependencies=[Depends(TrainerRoleBearer())]
   )
 async def get_stories() -> List[StorySchema]:
   db = Session()
@@ -35,7 +35,7 @@ async def get_stories() -> List[StorySchema]:
     tags=['stories'], 
     status_code=status.HTTP_200_OK,
     response_model=StorySchema,
-    dependencies=[Depends(JWTBearer())]
+    dependencies=[Depends(TrainerRoleBearer())]
   )
 async def get_story(id: int) -> StorySchema:
   db = Session()
@@ -52,7 +52,7 @@ async def get_story(id: int) -> StorySchema:
     tags=['stories'], 
     status_code=status.HTTP_200_OK,
     response_model=StorySchema,
-    dependencies=[Depends(JWTBearer())]
+    dependencies=[Depends(TrainerRoleBearer())]
   )
 async def create_story(story: StorySchema) -> StorySchema:
   if story.id:
@@ -69,7 +69,7 @@ async def create_story(story: StorySchema) -> StorySchema:
     tags=['stories'], 
     status_code=status.HTTP_200_OK,
     response_model=StorySchema,
-    dependencies=[Depends(JWTBearer())]
+    dependencies=[Depends(TrainerRoleBearer())]
   )
 async def update_story(id: int, story_update: StoryUpdateSchema) -> StorySchema:
   db = Session()
@@ -87,7 +87,7 @@ async def update_story(id: int, story_update: StoryUpdateSchema) -> StorySchema:
     path='/stories/{id}', 
     tags=['stories'], 
     status_code=status.HTTP_204_NO_CONTENT,
-    dependencies=[Depends(JWTBearer())]
+    dependencies=[Depends(TrainerRoleBearer())]
   )
 async def delete_story(id: int):
   db = Session()

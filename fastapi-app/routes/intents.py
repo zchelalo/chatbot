@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Response, status, HTTPException, Depends
 from starlette.status import HTTP_204_NO_CONTENT, HTTP_404_NOT_FOUND, HTTP_200_OK
 from typing import List
-from middlewares.jwt_bearer import JWTBearer
+from middlewares.jwt_bearer import TrainerRoleBearer
 from config.database import Session, engine, Base
 from services.intents import IntentService
 from schemas.intents import Intent as IntentSchema, IntentUpdate as IntentUpdateSchema
@@ -18,7 +18,7 @@ Base.metadata.create_all(bind=engine)
     tags=['intents'], 
     status_code=status.HTTP_200_OK,
     response_model=List[IntentSchema],
-    dependencies=[Depends(JWTBearer())]
+    dependencies=[Depends(TrainerRoleBearer())]
   )
 async def get_intents() -> List[IntentSchema]:
   db = Session()
@@ -35,7 +35,7 @@ async def get_intents() -> List[IntentSchema]:
     tags=['intents'], 
     status_code=status.HTTP_200_OK,
     response_model=IntentSchema,
-    dependencies=[Depends(JWTBearer())]
+    dependencies=[Depends(TrainerRoleBearer())]
   )
 async def get_intent(id: int) -> IntentSchema:
   db = Session()
@@ -52,7 +52,7 @@ async def get_intent(id: int) -> IntentSchema:
     tags=['intents'], 
     status_code=status.HTTP_200_OK,
     response_model=IntentSchema,
-    dependencies=[Depends(JWTBearer())]
+    dependencies=[Depends(TrainerRoleBearer())]
   )
 async def create_intent(intent: IntentSchema) -> IntentSchema:
   if intent.id:
@@ -69,7 +69,7 @@ async def create_intent(intent: IntentSchema) -> IntentSchema:
     tags=['intents'], 
     status_code=status.HTTP_200_OK,
     response_model=IntentSchema,
-    dependencies=[Depends(JWTBearer())]
+    dependencies=[Depends(TrainerRoleBearer())]
   )
 async def update_intent(id: int, intent_update: IntentUpdateSchema) -> IntentSchema:
   db = Session()
@@ -87,7 +87,7 @@ async def update_intent(id: int, intent_update: IntentUpdateSchema) -> IntentSch
     path='/intents/{id}', 
     tags=['intents'], 
     status_code=status.HTTP_204_NO_CONTENT,
-    dependencies=[Depends(JWTBearer())]
+    dependencies=[Depends(TrainerRoleBearer())]
   )
 async def delete_intent(id: int):
   db = Session()

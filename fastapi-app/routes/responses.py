@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Response, status, HTTPException, Depends
 from starlette.status import HTTP_204_NO_CONTENT, HTTP_404_NOT_FOUND, HTTP_200_OK
 from typing import List
-from middlewares.jwt_bearer import JWTBearer
+from middlewares.jwt_bearer import TrainerRoleBearer
 from config.database import Session, engine, Base
 from services.responses import ResponseService
 from schemas.responses import Response as ResponseSchema, ResponseUpdate as ResponseUpdateSchema
@@ -18,7 +18,7 @@ Base.metadata.create_all(bind=engine)
     tags=['responses'], 
     status_code=status.HTTP_200_OK,
     response_model=List[ResponseSchema],
-    dependencies=[Depends(JWTBearer())]
+    dependencies=[Depends(TrainerRoleBearer())]
   )
 async def get_responses() -> List[ResponseSchema]:
   db = Session()
@@ -35,7 +35,7 @@ async def get_responses() -> List[ResponseSchema]:
     tags=['responses'], 
     status_code=status.HTTP_200_OK,
     response_model=ResponseSchema,
-    dependencies=[Depends(JWTBearer())]
+    dependencies=[Depends(TrainerRoleBearer())]
   )
 async def get_response(id: int) -> ResponseSchema:
   db = Session()
@@ -52,7 +52,7 @@ async def get_response(id: int) -> ResponseSchema:
     tags=['responses'], 
     status_code=status.HTTP_200_OK,
     response_model=ResponseSchema,
-    dependencies=[Depends(JWTBearer())]
+    dependencies=[Depends(TrainerRoleBearer())]
   )
 async def create_response(response: ResponseSchema) -> ResponseSchema:
   if response.id:
@@ -69,7 +69,7 @@ async def create_response(response: ResponseSchema) -> ResponseSchema:
     tags=['responses'], 
     status_code=status.HTTP_200_OK,
     response_model=ResponseSchema,
-    dependencies=[Depends(JWTBearer())]
+    dependencies=[Depends(TrainerRoleBearer())]
   )
 async def update_response(id: int, response_update: ResponseUpdateSchema) -> ResponseSchema:
   db = Session()
@@ -87,7 +87,7 @@ async def update_response(id: int, response_update: ResponseUpdateSchema) -> Res
     path='/responses/{id}', 
     tags=['responses'], 
     status_code=status.HTTP_204_NO_CONTENT,
-    dependencies=[Depends(JWTBearer())]
+    dependencies=[Depends(TrainerRoleBearer())]
   )
 async def delete_response(id: int):
   db = Session()

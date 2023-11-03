@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Response, status, HTTPException, Depends
 from starlette.status import HTTP_204_NO_CONTENT, HTTP_404_NOT_FOUND, HTTP_200_OK
 from typing import List
-from middlewares.jwt_bearer import JWTBearer
+from middlewares.jwt_bearer import AdminRoleBearer, TrainerRoleBearer
 from config.database import Session, engine, Base
 from services.usuarios import UsuarioService
 from schemas.usuarios import Usuario as UsuarioSchema, UsuarioUpdate as UsuarioUpdateSchema
@@ -19,7 +19,7 @@ Base.metadata.create_all(bind=engine)
     tags=['usuarios'], 
     status_code=status.HTTP_200_OK,
     response_model=List[UsuarioSchema],
-    dependencies=[Depends(JWTBearer())]
+    dependencies=[Depends(TrainerRoleBearer())]
   )
 async def get_usuarios() -> List[UsuarioSchema]:
   db = Session()
@@ -37,7 +37,7 @@ async def get_usuarios() -> List[UsuarioSchema]:
     tags=['usuarios'], 
     status_code=status.HTTP_200_OK,
     response_model=UsuarioSchema,
-    dependencies=[Depends(JWTBearer())]
+    dependencies=[Depends(TrainerRoleBearer())]
   )
 async def get_usuario(matricula: int) -> UsuarioSchema:
   db = Session()
@@ -55,7 +55,7 @@ async def get_usuario(matricula: int) -> UsuarioSchema:
     tags=['usuarios'], 
     status_code=status.HTTP_200_OK,
     response_model=UsuarioSchema,
-    dependencies=[Depends(JWTBearer())]
+    dependencies=[Depends(AdminRoleBearer())]
   )
 async def create_usuario(usuario: UsuarioSchema) -> UsuarioSchema:
   password = sha256_crypt.hash(usuario.password)
@@ -73,7 +73,7 @@ async def create_usuario(usuario: UsuarioSchema) -> UsuarioSchema:
     tags=['usuarios'], 
     status_code=status.HTTP_200_OK,
     response_model=UsuarioSchema,
-    dependencies=[Depends(JWTBearer())]
+    dependencies=[Depends(AdminRoleBearer())]
   )
 async def update_usuario(matricula: int, usuario_update: UsuarioUpdateSchema) -> UsuarioSchema:
   db = Session()
@@ -97,7 +97,7 @@ async def update_usuario(matricula: int, usuario_update: UsuarioUpdateSchema) ->
     path='/usuarios/{matricula}', 
     tags=['usuarios'], 
     status_code=status.HTTP_204_NO_CONTENT,
-    dependencies=[Depends(JWTBearer())]
+    dependencies=[Depends(AdminRoleBearer())]
   )
 async def delete_usuario(matricula: int):
   db = Session()
