@@ -32,6 +32,6 @@ async def talk_to_chatbot(request_data: dict):
       else:
         raise HTTPException(status_code=response.status_code, detail={'error': 'Error al realizar la solicitud', 'message': response.text})
     else:
-      raise HTTPException(status_code=HTTP_400_BAD_REQUEST, detail={'error': 'El campo "message" es requerido en el cuerpo de la solicitud'})
+      raise HTTPException(status_code=HTTP_400_BAD_REQUEST, detail={'error': 'El campo "message" es requerido en el cuerpo de la solicitud', 'message': response.text})
   except Exception as e:
     return {'error': str(e)}
