@@ -8,6 +8,8 @@ from config.database import Session
 class AdminRoleBearer(HTTPBearer):
   async def __call__(self, request: Request):
     db = Session()
+    # users = UsuarioService(db).get_usuario_random()
+    # if users:
     auth = await super().__call__(request)
     data = validate_token(auth.credentials)
 
