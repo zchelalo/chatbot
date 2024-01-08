@@ -6,29 +6,34 @@ class RuleService():
     self.db = db
 
   def get_rules(self):
-    result = self.db.query(RuleModel).all()
-    return result
+    with self.db as session:
+      result = session.query(RuleModel).all()
+      return result
   
   def get_rule(self, id):
-    result = self.db.query(RuleModel).where(RuleModel.id == id).one_or_none()
-    return result
+    with self.db as session:
+      result = session.query(RuleModel).where(RuleModel.id == id).one_or_none()
+      return result
   
   def create_rule(self, rule: RuleSchema):
-    new_rule = RuleModel(**rule.model_dump())
-    self.db.add(new_rule)
-    self.db.commit()
-    self.db.refresh(new_rule)
-    return new_rule
+    with self.db as session:
+      new_rule = RuleModel(**rule.model_dump())
+      session.add(new_rule)
+      session.commit()
+      session.refresh(new_rule)
+      return new_rule
   
   def update_rule(self, rule: RuleSchema, rule_update: RuleUpdateSchema):
-    for field, value in rule_update.model_dump(exclude_unset=True).items():
-      setattr(rule, field, value)
+    with self.db as session:
+      for field, value in rule_update.model_dump(exclude_unset=True).items():
+        setattr(rule, field, value)
 
-    self.db.commit()
-    self.db.refresh(rule)
-    return rule
+      session.commit()
+      session.refresh(rule)
+      return rule
   
   def delete_rule(self, rule):
-    self.db.delete(rule)
-    self.db.commit()
-    return
+    with self.db as session:
+      session.delete(rule)
+      session.commit()
+      return
