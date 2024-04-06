@@ -85,7 +85,7 @@ async def update_usuario(matricula: int, usuario_update: UsuarioUpdateSchema) ->
     password = sha256_crypt.hash(usuario_update.password)
     usuario_update.password = password
   
-  result = UsuarioService(db).update_usuario(usuario, usuario_update)
+  result = UsuarioService(db).update_usuario(matricula, usuario_update)
 
   return result
   # return JSONResponse(status_code=HTTP_200_OK, content=result)

@@ -38,8 +38,12 @@ class UsuarioService():
       session.refresh(new_usuario)
       return new_usuario
   
-  def update_usuario(self, usuario: UsuarioSchema, usuario_update: UsuarioUpdateSchema):
+  def update_usuario(self, matricula: int, usuario_update: UsuarioUpdateSchema):
     with self.db as session:
+      usuario = session.query(UsuarioModel).filter(UsuarioModel.matricula == matricula).one_or_none()
+      if not usuario:
+        return None
+
       for field, value in usuario_update.model_dump(exclude_unset=True).items():
         setattr(usuario, field, value)
 
